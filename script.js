@@ -59,21 +59,95 @@ console.log(student.averageMark.toFixed(1));
 console.log(student);*/
 
 
-
-
-  class Person {
-
-    constructor(name, visits, raiting) {
-      this.name = name;
-      this.visits = visits;
-      this.raiting = raiting;
-    }
+function Student(name) {
+    this.name = name;
+    this.grades = [];
+    this.attendance = [];
+  
+    this.addGrade = function (grade) {
+      this.grades.push(grade);
+    };
+  
+    this.getAverageGrade = function () {
+      if (this.grades.length === 0) {
+        return 0;
+      } else {
+        return (
+          this.grades.reduce((acc, grade) => acc + grade, 0) / this.grades.length
+        );
+      }
+    };
+  
+    this.addAttendance = function (attendance) {
+      this.attendance.push(attendance);
+    };
+  
+    this.getAverageAttendance = function () {
+      if (this.attendance.length === 0) {
+        return 0;
+      } else {
+        return (
+          this.attendance.reduce((acc, attendance) => acc + attendance, 0) /
+          this.attendance.length
+        );
+      }
+    };
+  
   }
-  otto = new Person('Отто', '7', 'middle');
- mark = new Person('Mark', '10', 'best');
-  delete mark
-  console.log(otto);
-  console.log(mark);
+  
+  function Group(name) {
+    this.students = [];
+    this.name = name; 
+
+    this.addStudent = function (student) {
+      this.students.push(student);
+    };
+  
+    this.removeStudent = function (student) {
+      const index = this.students.indexOf(student);
+      if (index !== -1) {
+        this.students.splice(index, 1);
+      }
+    };
+  
+    this.studentsGrade = function () {
+      return this.students
+        .map((student) => ({
+          student: student,
+          averageGrade: student.getAverageGrade(),
+        }))
+        .sort((a, b) => b.averageGrade - a.averageGrade);
+    };
+  
+    this.studentsAttendance = function () {
+      return this.students
+        .map((student) => ({
+          student: student,
+          averageAttendance: student.getAverageAttendance(),
+        }))
+        .sort((a, b) => b.averageAttendance - a.averageAttendance);
+    };
+  }
+  
+  const group = new Group();
+  
+  const student1 = new Student('Mark');
+  student1.addGrade(7);
+  student1.addAttendance(5);
+  group.addStudent(student1);
+  
+  const student2 = new Student('Отто');
+  student2.addGrade(5);
+  student2.addAttendance(6);
+  group.addStudent(student2);
+  
+   //group.removeStudent(student2);
+  
+  console.log("Grade:");
+  console.log(group.studentsGrade());
+  
+  console.log("Attendance:");
+  console.log(group.studentsAttendance());
 
 
 
